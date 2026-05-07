@@ -78,7 +78,9 @@ int Vi::poll(RxBatch& batch) {
   std::size_t taken = 0;
   while (taken < max_take && !impl_->rx_queue.empty()) {
     std::vector<char>& p = impl_->rx_queue.front();
-    batch.packets.push_back(PacketRef(&p[0], p.size(), 0));
+    batch.owned_payloads.push_back(p);
+    std::vector<char>& owned = batch.owned_payloads.back();
+    batch.packets.push_back(PacketRef(owned.empty() ? 0 : static_cast<const void*>(&owned[0]), owned.size(), 0));
     impl_->stats.on_rx();
     ++taken;
     impl_->rx_queue.pop_front();

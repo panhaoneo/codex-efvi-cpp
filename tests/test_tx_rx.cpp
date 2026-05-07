@@ -11,6 +11,10 @@ int main() {
   int n = vi.poll(batch);
   assert(n == 1);
   assert(batch.packets.size() == 1);
+  assert(batch.packets[0].len() == 3);
+  const char* payload = static_cast<const char*>(batch.packets[0].data());
+  assert(payload != nullptr);
+  assert(payload[0] == 'a' && payload[1] == 'b' && payload[2] == 'c');
 
   const void* bufs[2] = {"1", "2"};
   std::size_t lens[2] = {1, 1};

@@ -24,7 +24,12 @@ private:
 
 struct RxBatch {
   std::vector<PacketRef> packets;
-  void clear() { packets.clear(); }
+  std::vector<std::vector<char> > owned_payloads;
+
+  void clear() {
+    packets.clear();
+    owned_payloads.clear();
+  }
 };
 
 }  // namespace efvi
